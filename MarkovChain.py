@@ -60,16 +60,6 @@ def predict(code : str) -> str:
     return np.random.choice(list(options.keys()), p=list(options.values()))
     
 
-def load_dataset():
-    """1- Load the dataset from the file
-       2- Split dataset into train and test
-    """
-    data = tuple(open("txt.txt", 'r'))
-        
-    train, test = train_test_split(data,test_size=0.2)
-    
-    return train, test
-
 def train_markov(train):
     """update the markov chain using train"""
     
@@ -99,6 +89,16 @@ def predict_next(test):
     
     return pred, len(set(gt))
 
+
+def load_dataset():
+    """1- Load the dataset from the file
+       2- Split dataset into train and test
+    """
+    data = tuple(open("dataset.txt", 'r'))
+        
+    train, test = train_test_split(data,test_size=0.2)
+    
+    return train, test
 
 
 if __name__ == '__main__':
