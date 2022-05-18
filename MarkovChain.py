@@ -7,7 +7,6 @@ Predict the next ICD-10 code based on the dataset with markov chains.
 
 import numpy as np
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import confusion_matrix
 from ConfusionMatrix import getCM, printStat
 
 
@@ -75,9 +74,10 @@ def predict_next(test):
     gt = []
     for line in test:
         codes = line.strip().split(' ')
+        #Divide the sequence into two equals portion as a training and testing
         t_head, t_tail = codes[:len(codes)//2], codes[len(codes)//2:]
     
-        # Select the last ICD-10 code.
+        # Select the last ICD-10 code from the training sequence of the given set.
         p_code = predict(t_head[-1])
         
         #book keeping the total number of the classes
@@ -95,7 +95,8 @@ def load_dataset():
        2- Split dataset into train and test
     """
     data = tuple(open("dataset.txt", 'r'))
-        
+    
+    #split data into training and testing    
     train, test = train_test_split(data,test_size=0.2)
     
     return train, test
@@ -112,6 +113,7 @@ if __name__ == '__main__':
     normalize()
     
     try:
+      #predict only the next diagnosis
       predicted, classes  =  predict_next(test)
       cm = getCM(predicted, classes)
       printStat(cm)
